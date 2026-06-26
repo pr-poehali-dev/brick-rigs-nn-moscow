@@ -86,21 +86,39 @@ const Index = () => {
       <section className="mx-auto max-w-6xl px-6 py-20">
         <h2 className="font-display mb-12 text-center text-3xl font-bold sm:text-4xl">Наши города</h2>
         <div className="grid gap-8 md:grid-cols-2">
-          {/* Нижний Новгород — с пасхалкой */}
-          <div className="group overflow-hidden rounded-[2rem] border border-border bg-card transition-transform hover:scale-[1.02]">
-            <div className="relative h-64 overflow-hidden">
-              <img src={NN_IMG} alt="Нижний Новгород" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
-              {/* Пасхалка при наводе */}
-              <div className="absolute inset-0 flex items-center justify-center bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6">
-                <p className="text-center text-white text-sm font-medium leading-relaxed">
+          {/* Нижний Новгород — с переворотом */}
+          <div className="group" style={{ perspective: '1000px' }}>
+            <div
+              className="relative transition-transform duration-700"
+              style={{
+                transformStyle: 'preserve-3d',
+                transform: 'rotateY(0deg)',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.transform = 'rotateY(180deg)')}
+              onMouseLeave={e => (e.currentTarget.style.transform = 'rotateY(0deg)')}
+            >
+              {/* ЛИЦО */}
+              <div className="overflow-hidden rounded-[2rem] border border-border bg-card" style={{ backfaceVisibility: 'hidden' }}>
+                <div className="relative h-64 overflow-hidden">
+                  <img src={NN_IMG} alt="Нижний Новгород" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
+                </div>
+                <div className="p-8">
+                  <h3 className="font-display mb-3 text-2xl font-bold">Нижний Новгород</h3>
+                  <p className="text-muted-foreground">Город на слиянии Оки и Волги. Кремль, набережные и атмосфера старого центра в нашем РП.</p>
+                </div>
+              </div>
+
+              {/* ОБОРОТ */}
+              <div
+                className="absolute inset-0 overflow-hidden rounded-[2rem] border border-border bg-card flex flex-col items-center justify-center p-8 text-center"
+                style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+              >
+                <Icon name="PartyPopper" size={40} className="mb-4 text-muted-foreground" />
+                <p className="text-foreground text-base font-medium leading-relaxed">
                   Сайт кста сделан в 3 часа ночи лол кек чебурек ( Достаточно кринжово было? )
                 </p>
               </div>
-            </div>
-            <div className="p-8">
-              <h3 className="font-display mb-3 text-2xl font-bold">Нижний Новгород</h3>
-              <p className="text-muted-foreground">Город на слиянии Оки и Волги. Кремль, набережные и атмосфера старого центра в нашем РП.</p>
             </div>
           </div>
 
