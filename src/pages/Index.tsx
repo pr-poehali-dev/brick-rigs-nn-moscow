@@ -1,10 +1,42 @@
+import { useRef } from 'react';
 import Icon from '@/components/ui/icon';
 
 const NN_IMG = 'https://cdn.poehali.dev/projects/880e65a8-0481-459a-aad5-111eba817912/files/8befb2d5-ba3d-4e44-88ae-e2e0d04661d8.jpg';
 const MSK_IMG = 'https://cdn.poehali.dev/projects/880e65a8-0481-459a-aad5-111eba817912/files/1d5da627-7d6b-4703-90ff-3a1c67ad0357.jpg';
 const DISCORD = 'https://discord.gg/4TkbDG3a2b';
 
+const RULES = [
+  { num: '1', title: 'RP / РП', full: 'Role Play / Ролевая игра', desc: 'Отыгровка персонажа и его жизни.' },
+  { num: '1.1', title: 'Non RP / Нон РП', full: 'Non Role Play / Не Ролевая Игра', desc: 'Действия нарушающие РП процесс.', punishment: 'Бан 1 день' },
+  { num: '1.2', title: 'NRD / НРД', full: 'Non RP Drive / Вождение не Ролевой Игры', desc: 'Езда с нарушением ПДД, с многочисленными ДТП и созданием опасности на дорогах.', punishment: 'Бан 1 день' },
+  { num: '1.3', title: 'ООС', full: 'Out Of Character / Не В Персонаже', desc: 'Действия происходящие вне основного РП процесса.' },
+  { num: '1.4', title: 'IC / ИС', full: 'In Character / В Персонаже', desc: 'Действия происходящие в основном РП процессе.' },
+  { num: '1.5', title: 'DM / ДМ', full: 'Death Match / Смертельный поединок', desc: 'Убийство без каких-либо IC причин.', punishment: 'Бан 1 день' },
+  { num: '1.5.1', title: 'MDM / МДМ', full: 'Mass Death Match / Массовый Смертельный Поединок', desc: 'Убийство без каких-либо IC причин более 2-ух раз.', punishment: 'Бан от 3 до 7 дней' },
+  { num: '1.5.2', title: 'RK / РК', full: 'Revange Kill / Убийство с целью Мести', desc: 'Убийство с целью мести игрока — например, если он вас убил по IC и вы решили отомстить.', punishment: 'Бан 2 дня' },
+  { num: '1.5.3', title: 'TK / ТК', full: 'Team Kill / Убийство Своих', desc: 'Убийство людей, находящихся в вашей команде или фракции.', punishment: 'Бан 2 дня' },
+  { num: '1.5.4', title: 'SK / СК', full: 'Spawn Kill / Убийство на месте Появления', desc: 'Убийство любого человека при месте появления.', punishment: 'Бан 1 день' },
+  { num: '1.6', title: 'PG / ПГ', full: 'Power Gaming / Игра Силы', desc: 'Отсутствие страха потерять жизнь, представление себя супергероем, который может вынести толпу в драке.', punishment: 'Бан 5 дней' },
+  { num: '1.7', title: 'FRP / ФРП', full: 'Fear Role Play / Ролевая Игра со Страхом', desc: 'Вы обязаны бояться навредить себе и потерять жизнь.', punishment: 'Бан 1 день' },
+  { num: '1.8', title: 'MG / МГ', full: 'Meta Gaming / Мета Игра', desc: 'Вы не имеете права использовать знания, которые ваш РП персонаж не знает.', punishment: 'Бан 2 дня' },
+  { num: '1.9', title: 'NLR / НЛР', full: 'New Life Rule / Правило Новой Жизни', desc: 'После смерти ваш персонаж забывает что было до смерти — у вас частичная амнезия.' },
+  { num: '2', title: 'GM / ГМ', full: 'God Mode / Режим Бога', desc: 'Вы не можете включать ГМ в РП (кнопка I на клавиатуре).', punishment: 'Бан 4 дня' },
+  { num: '2.1', title: 'FRCR / ФРКР', full: 'Free Car / Бесплатный Автомобиль', desc: 'Вы не можете призывать автомобиль, если он не зарегистрирован (исключения: велосипед, питбайки) или вы попали в ДТП.', punishment: 'Бан 2 дня' },
+  { num: '2.2', title: 'FRP / ФРП', full: 'Fail Role Play / Мешать Ролевой Игре', desc: 'Нет права войти в РП с другими гражданами, помешав их основной РП игре.', punishment: 'Бан 1 день' },
+  { num: '2.3', title: 'FRTP / ФРТП', full: 'Free Teleport / Бесплатный телепорт', desc: 'Телепорт на любые расстояния запрещён.', punishment: 'Бан 2 дня' },
+  { num: '2.4', title: 'FRRS / ФРРС', full: 'Free Respawn / Бесплатное Перерождение', desc: 'Запрещается возрождаться до прибытия медиков.', punishment: 'Бан 1 день' },
+  { num: '2.5', title: 'CDOD / КДОД', full: 'Call Doctors On Death / Позвонить Медикам При Смерти', desc: 'Правило позволяет вызвать медиков, находясь без сознания.' },
+  { num: '2.6', title: 'DR / ДР', full: 'Death Rule / Правило Смерти', desc: 'После того как здоровье падает на 0% — вы теряете сознание. Можно позвонить медикам или полиции, но нельзя писать в общий чат.', punishment: 'Бан 1 день' },
+  { num: '2.7', title: 'CR / КР', full: 'Car Rule / Правило Машин', desc: 'Нельзя призывать военную технику (исключение: фракция ВП, Армия), а также машины с подозрительным названием.', punishment: 'Бан 4 дня / Перм бан' },
+];
+
 const Index = () => {
+  const rulesRef = useRef<HTMLElement>(null);
+
+  const scrollToRules = () => {
+    rulesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       {/* Декоративные размытые круги */}
@@ -70,6 +102,18 @@ const Index = () => {
             </div>
           ))}
         </div>
+
+        {/* Кнопка перехода к правилам */}
+        <div className="mt-12 flex justify-center">
+          <button
+            onClick={scrollToRules}
+            className="group inline-flex items-center gap-3 rounded-full border border-border bg-card px-8 py-4 text-lg font-semibold text-foreground transition-all hover:bg-accent hover:scale-105"
+          >
+            <Icon name="BookOpen" size={22} />
+            Правила нашего проекта
+            <Icon name="ChevronDown" size={20} className="transition-transform group-hover:translate-y-1" />
+          </button>
+        </div>
       </section>
 
       {/* О ПРОЕКТЕ */}
@@ -106,6 +150,47 @@ const Index = () => {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ПРАВИЛА */}
+      <section ref={rulesRef} className="mx-auto max-w-4xl scroll-mt-8 px-6 py-20">
+        <div className="mb-12 text-center">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-card border border-border">
+            <Icon name="BookOpen" size={28} />
+          </div>
+          <h2 className="font-display text-3xl font-bold sm:text-4xl">Правила проекта</h2>
+          <p className="mt-3 text-muted-foreground">Соблюдай правила — и игра будет честной для всех</p>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          {RULES.map((rule) => {
+            const isMain = !rule.num.includes('.');
+            return (
+              <div
+                key={rule.num}
+                className={`rounded-[1.5rem] border border-border bg-card p-5 transition-colors hover:bg-accent ${isMain ? 'ring-1 ring-border' : 'ml-4'}`}
+              >
+                <div className="flex flex-wrap items-start gap-3">
+                  <span className="shrink-0 rounded-full bg-secondary px-3 py-1 text-xs font-bold text-foreground font-mono">
+                    {rule.num}
+                  </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                      <span className="font-semibold text-foreground">{rule.title}</span>
+                      <span className="text-xs text-muted-foreground">— {rule.full}</span>
+                    </div>
+                    <p className="text-sm text-muted-foreground">{rule.desc}</p>
+                  </div>
+                  {rule.punishment && (
+                    <span className="shrink-0 rounded-full bg-destructive/20 border border-destructive/40 px-3 py-1 text-xs font-semibold text-red-400 whitespace-nowrap">
+                      ⚠ {rule.punishment}
+                    </span>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </section>
 
