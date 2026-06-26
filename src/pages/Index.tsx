@@ -90,6 +90,23 @@ const Index = () => {
             </div>
           ))}
         </div>
+
+        <div className="glow mt-8 rounded-[2rem] border border-border bg-card p-8 sm:p-10">
+          <div className="flex items-start gap-4">
+            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full bg-secondary">
+              <Icon name="Sparkle" size={28} />
+            </div>
+            <div>
+              <h3 className="font-display mb-3 text-xl font-bold">Как всё начиналось</h3>
+              <p className="text-muted-foreground">
+                Хоть у нас мало активных участников на данный момент, но наш сервер был создан в декабре 2025-го года
+                двумя друзьями — <span className="font-semibold text-foreground">Mryo</span> (сейчас{' '}
+                <span className="font-semibold text-foreground">trauma</span>) и{' '}
+                <span className="font-semibold text-foreground">SHAITANMASHINANAHUY#HUY</span>.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* CTA */}
