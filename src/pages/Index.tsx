@@ -227,6 +227,14 @@ const Index = () => {
             );
           })}
         </div>
+
+        <p className="mt-8 text-center text-sm text-muted-foreground/70 max-w-xl mx-auto leading-relaxed">
+          Каждый бан может быть обжалован на нашем{' '}
+          <a href="https://discord.gg/4TkbDG3a2b" target="_blank" rel="noopener noreferrer" className="text-muted-foreground underline underline-offset-2 hover:text-foreground transition-colors">
+            Discord-сервере
+          </a>
+          . Никакие обстоятельства, которые вы назовёте, не освобождают от ответственности.
+        </p>
       </section>
 
       {/* CTA */}
