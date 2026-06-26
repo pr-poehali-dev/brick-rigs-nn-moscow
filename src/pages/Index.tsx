@@ -27,7 +27,7 @@ const RULES = [
   { num: '2.4', title: 'FRRS / ФРРС', full: 'Free Respawn / Бесплатное Перерождение', desc: 'Запрещается возрождаться до прибытия медиков.', punishment: 'Бан 1 день' },
   { num: '2.5', title: 'CDOD / КДОД', full: 'Call Doctors On Death / Позвонить Медикам При Смерти', desc: 'Правило позволяет вызвать медиков, находясь без сознания.' },
   { num: '2.6', title: 'DR / ДР', full: 'Death Rule / Правило Смерти', desc: 'После того как здоровье падает на 0% — вы теряете сознание. Можно позвонить медикам или полиции, но нельзя писать в общий чат.', punishment: 'Бан 1 день' },
-  { num: '2.7', title: 'CR / КР', full: 'Car Rule / Правило Машин', desc: 'Нельзя призывать военную технику (исключение: фракция ВП, Армия), а также машины с подозрительным названием.', punishment: 'Бан 4 дня / Перм бан' },
+  { num: '2.7', title: 'CR / КР', full: 'Car Rule / Правило Машин', desc: 'Нельзя призывать военную технику — за это бан 4 дня (исключение: фракция ВП и Армия). Призыв машины с подозрительным/неадекватным названием — перманентный бан.', punishment2: [{ label: 'Военная техника', ban: 'Бан 4 дня' }, { label: 'Подозрит. название', ban: 'Перм бан' }] },
 ];
 
 const Index = () => {
@@ -163,28 +163,63 @@ const Index = () => {
           <p className="mt-3 text-muted-foreground">Соблюдай правила — и игра будет честной для всех</p>
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2">
           {RULES.map((rule) => {
-            const isMain = !rule.num.includes('.');
+            const depth = rule.num.split('.').length - 1;
+            const isRoot = depth === 0;
+            const r = rule as typeof RULES[number] & { punishment2?: {label: string; ban: string}[] };
+
             return (
               <div
                 key={rule.num}
-                className={`rounded-[1.5rem] border border-border bg-card p-5 transition-colors hover:bg-accent ${isMain ? 'ring-1 ring-border' : 'ml-4'}`}
+                style={{ marginLeft: `${depth * 20}px` }}
+                className={`group relative rounded-2xl border transition-all duration-200
+                  ${isRoot
+                    ? 'border-border/60 bg-card hover:border-border'
+                    : 'border-border/30 bg-card/50 hover:bg-card/80'}
+                `}
               >
-                <div className="flex flex-wrap items-start gap-3">
-                  <span className="shrink-0 rounded-full bg-secondary px-3 py-1 text-xs font-bold text-foreground font-mono">
+                {/* Левая цветная полоска для подпунктов */}
+                {!isRoot && (
+                  <div className="absolute left-0 top-3 bottom-3 w-0.5 rounded-full bg-border/50" />
+                )}
+
+                <div className="flex flex-wrap items-start gap-3 p-4 pl-5">
+                  {/* Номер */}
+                  <span className={`shrink-0 rounded-xl px-2.5 py-0.5 font-mono text-xs font-bold
+                    ${isRoot ? 'bg-foreground text-background' : 'bg-secondary text-muted-foreground'}`}>
                     {rule.num}
                   </span>
+
+                  {/* Текст */}
                   <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap items-center gap-2 mb-1">
-                      <span className="font-semibold text-foreground">{rule.title}</span>
-                      <span className="text-xs text-muted-foreground">— {rule.full}</span>
-                    </div>
-                    <p className="text-sm text-muted-foreground">{rule.desc}</p>
+                    <p className="text-sm font-semibold text-foreground leading-snug">
+                      {rule.title}
+                      <span className="ml-1.5 font-normal text-muted-foreground text-xs">
+                        — {rule.full}
+                      </span>
+                    </p>
+                    <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{rule.desc}</p>
+
+                    {/* Двойное наказание для 2.7 */}
+                    {r.punishment2 && (
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {r.punishment2.map((p) => (
+                          <span key={p.label} className="inline-flex items-center gap-1.5 rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-1 text-xs font-semibold text-red-400">
+                            <Icon name="AlertTriangle" size={11} />
+                            <span className="text-muted-foreground font-normal">{p.label}:</span>
+                            {p.ban}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  {rule.punishment && (
-                    <span className="shrink-0 rounded-full bg-destructive/20 border border-destructive/40 px-3 py-1 text-xs font-semibold text-red-400 whitespace-nowrap">
-                      ⚠ {rule.punishment}
+
+                  {/* Наказание */}
+                  {'punishment' in rule && rule.punishment && !r.punishment2 && (
+                    <span className="shrink-0 self-start inline-flex items-center gap-1.5 rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-1 text-xs font-semibold text-red-400 whitespace-nowrap">
+                      <Icon name="AlertTriangle" size={11} />
+                      {rule.punishment}
                     </span>
                   )}
                 </div>
