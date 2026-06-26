@@ -86,21 +86,35 @@ const Index = () => {
       <section className="mx-auto max-w-6xl px-6 py-20">
         <h2 className="font-display mb-12 text-center text-3xl font-bold sm:text-4xl">Наши города</h2>
         <div className="grid gap-8 md:grid-cols-2">
-          {[
-            { img: NN_IMG, title: 'Нижний Новгород', desc: 'Город на слиянии Оки и Волги. Кремль, набережные и атмосфера старого центра в нашем РП.' },
-            { img: MSK_IMG, title: 'Москва', desc: 'Столица в огнях. Небоскрёбы Москва-Сити и исторический центр для ваших ролевых историй.' },
-          ].map((c) => (
-            <div key={c.title} className="group overflow-hidden rounded-[2rem] border border-border bg-card transition-transform hover:scale-[1.02]">
-              <div className="relative h-64 overflow-hidden">
-                <img src={c.img} alt={c.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
-                <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
-              </div>
-              <div className="p-8">
-                <h3 className="font-display mb-3 text-2xl font-bold">{c.title}</h3>
-                <p className="text-muted-foreground">{c.desc}</p>
+          {/* Нижний Новгород — с пасхалкой */}
+          <div className="group overflow-hidden rounded-[2rem] border border-border bg-card transition-transform hover:scale-[1.02]">
+            <div className="relative h-64 overflow-hidden">
+              <img src={NN_IMG} alt="Нижний Новгород" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
+              {/* Пасхалка при наводе */}
+              <div className="absolute inset-0 flex items-center justify-center bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity duration-300 p-6">
+                <p className="text-center text-white text-sm font-medium leading-relaxed">
+                  Сайт кста сделан в 3 часа ночи лол кек чебурек ( Достаточно кринжово было? )
+                </p>
               </div>
             </div>
-          ))}
+            <div className="p-8">
+              <h3 className="font-display mb-3 text-2xl font-bold">Нижний Новгород</h3>
+              <p className="text-muted-foreground">Город на слиянии Оки и Волги. Кремль, набережные и атмосфера старого центра в нашем РП.</p>
+            </div>
+          </div>
+
+          {/* Москва */}
+          <div className="group overflow-hidden rounded-[2rem] border border-border bg-card transition-transform hover:scale-[1.02]">
+            <div className="relative h-64 overflow-hidden">
+              <img src={MSK_IMG} alt="Москва" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
+            </div>
+            <div className="p-8">
+              <h3 className="font-display mb-3 text-2xl font-bold">Москва</h3>
+              <p className="text-muted-foreground">Столица в огнях. Небоскрёбы Москва-Сити и исторический центр для ваших ролевых историй.</p>
+            </div>
+          </div>
         </div>
 
         {/* Кнопка перехода к правилам */}
