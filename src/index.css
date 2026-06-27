@@ -99,6 +99,37 @@
     @apply bg-background text-foreground;
     font-family: "Rubik", sans-serif;
   }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      repeating-linear-gradient(
+        105deg,
+        transparent 0px,
+        rgba(255, 255, 255, 0.012) 1px,
+        transparent 2px,
+        rgba(255, 255, 255, 0.008) 4px,
+        transparent 6px,
+        rgba(255, 255, 255, 0.015) 8px,
+        transparent 12px
+      ),
+      repeating-linear-gradient(
+        195deg,
+        transparent 0px,
+        rgba(255, 255, 255, 0.008) 2px,
+        transparent 4px,
+        rgba(255, 255, 255, 0.012) 7px,
+        transparent 10px
+      );
+    background-size:
+      180px 180px,
+      220px 220px;
+    opacity: 1;
+  }
 }
 
 @layer utilities {
