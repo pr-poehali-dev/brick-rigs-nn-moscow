@@ -220,8 +220,8 @@ const Index = () => {
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-card border border-border">
             <Icon name="BookOpen" size={28} />
           </div>
-          <h2 className="font-display text-3xl font-bold sm:text-4xl">Правила проекта</h2>
-          <p className="mt-3 text-muted-foreground">Соблюдай правила — и игра будет честной для всех</p>
+          <h2 className="font-display text-3xl font-bold sm:text-4xl">Правила</h2>
+          <p className="mt-3 text-muted-foreground">Соблюдай правила — и к тебе будут относиться лучше</p>
         </div>
 
         <div className="mb-4 rounded-2xl border border-border/30 bg-card/20 px-6 py-5">
