@@ -224,42 +224,49 @@ const Index = () => {
           <p className="mt-3 text-muted-foreground">Соблюдай правила — и игра будет честной для всех</p>
         </div>
 
-        <div className="relative flex flex-col">
-          {/* Вертикальная линия-хребет */}
-          <div className="absolute left-[19px] top-0 bottom-0 w-px bg-border/40" />
-
-          {RULES.map((rule) => {
+        <div className="relative flex flex-col gap-0">
+          {RULES.map((rule, idx) => {
             const depth = rule.num.split('.').length - 1;
-            const isRoot = depth === 0;
             const r = rule as typeof RULES[number] & { punishment2?: {label: string; ban: string}[] };
+            const isLast = idx === RULES.length - 1;
 
             return (
-              <div key={rule.num} className="relative flex items-start gap-3 py-1">
-                {/* Кружок на линии — всегда с цифрой */}
-                <div className={`relative z-10 mt-3 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border font-mono font-bold transition-colors
-                  ${isRoot
-                    ? 'bg-foreground text-background border-foreground text-xs'
-                    : 'bg-card text-muted-foreground border-border/50 text-[9px]'}`}>
-                  {rule.num}
+              <div key={rule.num} className="group relative flex items-stretch gap-0">
+
+                {/* Левая колонка: кружок + вертикальная линия */}
+                <div className="relative flex flex-col items-center" style={{ width: 40, minWidth: 40 }}>
+                  {/* Линия сверху */}
+                  {idx !== 0 && (
+                    <div className="w-px flex-none bg-gradient-to-b from-border/60 to-border/20" style={{ height: '0.75rem' }} />
+                  )}
+                  {/* Кружок */}
+                  <div className="relative z-10 flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border/60 bg-card font-mono font-bold text-[9px] text-muted-foreground transition-all duration-200 group-hover:border-white/40 group-hover:text-white group-hover:bg-white/10"
+                    style={{ boxShadow: 'none' }}>
+                    {rule.num}
+                  </div>
+                  {/* Линия снизу */}
+                  {!isLast && (
+                    <div className="w-px flex-1 bg-gradient-to-b from-border/20 to-border/60 min-h-[0.75rem]" />
+                  )}
                 </div>
 
-                {/* Горизонтальная черта от кружка к карточке */}
-                <div className="absolute left-10 top-[1.35rem] h-px w-3 bg-border/40" />
+                {/* Горизонтальный коннектор */}
+                <div className="flex items-center" style={{ width: 16, minWidth: 16 }}>
+                  <div className="h-px w-full bg-gradient-to-r from-border/40 to-transparent group-hover:from-white/20 transition-colors duration-200" />
+                </div>
 
                 {/* Карточка */}
-                <div className={`flex-1 rounded-2xl border p-4 transition-colors
-                  ${isRoot
-                    ? 'border-border bg-card'
-                    : 'border-border/30 bg-card/40 hover:bg-card/70'}`}
-                  style={{ marginLeft: `${depth * 12}px` }}
+                <div
+                  className="flex-1 my-1 rounded-2xl border border-border/20 bg-card/30 p-4 transition-all duration-200 group-hover:bg-white/[0.06] group-hover:border-white/20 group-hover:shadow-[0_0_20px_-8px_rgba(255,255,255,0.15)]"
+                  style={{ marginLeft: `${depth * 10}px` }}
                 >
                   <div className="flex flex-wrap items-start gap-2">
                     <div className="flex-1 min-w-0">
-                      <p className={`text-sm leading-snug ${isRoot ? 'font-bold' : 'font-semibold'}`}
+                      <p className="text-sm font-semibold leading-snug"
                         style={{ background: 'linear-gradient(90deg, #ffffff 0%, #a0a0a0 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                         {rule.title}
                         <span className="ml-1.5 font-normal text-xs"
-                          style={{ background: 'linear-gradient(90deg, #888 0%, #555 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                          style={{ background: 'linear-gradient(90deg, #777 0%, #444 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                           — {rule.full}
                         </span>
                       </p>
