@@ -122,15 +122,36 @@ const Index = () => {
             </div>
           </div>
 
-          {/* Москва */}
-          <div className="group overflow-hidden rounded-[2rem] border border-border bg-card transition-transform hover:scale-[1.02]">
-            <div className="relative h-64 overflow-hidden">
-              <img src={MSK_IMG} alt="Москва" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
-            </div>
-            <div className="p-8">
-              <h3 className="font-display mb-3 text-2xl font-bold">Москва</h3>
-              <p className="text-muted-foreground">Столица в огнях. Небоскрёбы Москва-Сити и исторический центр для ваших ролевых историй.</p>
+          {/* Москва — с переворотом */}
+          <div className="group" style={{ perspective: '1000px' }}>
+            <div
+              className="relative transition-transform duration-700"
+              style={{ transformStyle: 'preserve-3d', transform: 'rotateY(0deg)' }}
+              onMouseEnter={e => (e.currentTarget.style.transform = 'rotateY(180deg)')}
+              onMouseLeave={e => (e.currentTarget.style.transform = 'rotateY(0deg)')}
+            >
+              {/* ЛИЦО */}
+              <div className="overflow-hidden rounded-[2rem] border border-border bg-card" style={{ backfaceVisibility: 'hidden' }}>
+                <div className="relative h-64 overflow-hidden">
+                  <img src={MSK_IMG} alt="Москва" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
+                </div>
+                <div className="p-8">
+                  <h3 className="font-display mb-3 text-2xl font-bold">Москва</h3>
+                  <p className="text-muted-foreground">Столица в огнях. Небоскрёбы Москва-Сити и исторический центр для ваших ролевых историй.</p>
+                </div>
+              </div>
+
+              {/* ОБОРОТ */}
+              <div
+                className="absolute inset-0 overflow-hidden rounded-[2rem] border border-border bg-card flex flex-col items-center justify-center p-8 text-center"
+                style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
+              >
+                <Icon name="Ghost" size={40} className="mb-4 text-muted-foreground" />
+                <p className="text-foreground text-base font-medium leading-relaxed">
+                  Тут ничего нет :)))
+                </p>
+              </div>
             </div>
           </div>
         </div>
