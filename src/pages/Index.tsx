@@ -122,8 +122,8 @@ const Index = () => {
                 className="absolute inset-0 overflow-hidden rounded-[2rem] border border-border bg-card flex flex-col items-center justify-center p-8 text-center"
                 style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
               >
-                <Icon name="PartyPopper" size={40} className="mb-4 text-muted-foreground" />
-                <p className="text-foreground text-base font-medium leading-relaxed">
+                <p className="text-muted-foreground text-xs font-semibold uppercase tracking-widest mb-3">Интересный факт:</p>
+                <p className="text-foreground text-xl font-bold leading-relaxed">
                   Сайт был начат в 2:30, а закончен в 4 часа утра
                 </p>
               </div>
@@ -155,8 +155,8 @@ const Index = () => {
                 className="absolute inset-0 overflow-hidden rounded-[2rem] border border-border bg-card flex flex-col items-center justify-center p-8 text-center"
                 style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
               >
-                <Icon name="Ghost" size={40} className="mb-4 text-muted-foreground" />
-                <p className="text-foreground text-base font-medium leading-relaxed">
+                <p className="text-muted-foreground text-xs font-semibold uppercase tracking-widest mb-3">Интересный факт:</p>
+                <p className="text-foreground text-xl font-bold leading-relaxed">
                   Тут ничего нет :)))
                 </p>
               </div>
