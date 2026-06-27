@@ -124,7 +124,7 @@ const Index = () => {
               >
                 <Icon name="PartyPopper" size={40} className="mb-4 text-muted-foreground" />
                 <p className="text-foreground text-base font-medium leading-relaxed">
-                  Сайт кста сделан в 3 часа ночи лол кек чебурек ( Достаточно кринжово было? )
+                  Сайт был начат в 2:30, а закончен в 4 часа утра
                 </p>
               </div>
             </div>
