@@ -39,16 +39,19 @@ const CursorTrail = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       if (points.current.length > 1) {
-        for (let i = 1; i < points.current.length; i++) {
+        const total = points.current.length;
+        for (let i = 1; i < total; i++) {
           const prev = points.current[i - 1];
           const curr = points.current[i];
           const age = now - curr.t;
+          const progress = i / total;
           const alpha = Math.max(0, (1 - age / 1000) * 0.4);
+          const lineWidth = 1 + progress * 6;
           ctx.beginPath();
           ctx.moveTo(prev.x, prev.y);
           ctx.lineTo(curr.x, curr.y);
           ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
-          ctx.lineWidth = 1.5;
+          ctx.lineWidth = lineWidth;
           ctx.lineCap = 'round';
           ctx.stroke();
         }
