@@ -308,6 +308,13 @@ const Index = () => {
           })}
         </div>
 
+        <div className="mt-8 mb-4 rounded-2xl border border-border/30 bg-card/20 px-6 py-5">
+          <p className="font-display text-2xl font-bold sm:text-3xl"
+            style={{ background: 'linear-gradient(90deg, #ffffff 0%, #666 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            Разделы 3–4 &nbsp;·&nbsp; Discord правила
+          </p>
+        </div>
+
         <p className="mt-8 text-center text-sm text-muted-foreground/70 max-w-xl mx-auto leading-relaxed">
           Каждый бан может быть обжалован на нашем{' '}
           <a href="https://discord.gg/4TkbDG3a2b" target="_blank" rel="noopener noreferrer" className="text-muted-foreground underline underline-offset-2 hover:text-foreground transition-colors">
