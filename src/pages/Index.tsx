@@ -2,15 +2,17 @@ import { useRef, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 
 
-interface TrailPoint {
+interface RainDrop {
   x: number;
   y: number;
-  t: number;
+  speed: number;
+  length: number;
+  opacity: number;
 }
 
-const CursorTrail = () => {
+const Rain = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const points = useRef<TrailPoint[]>([]);
+  const drops = useRef<RainDrop[]>([]);
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
@@ -22,38 +24,34 @@ const CursorTrail = () => {
     const resize = () => {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
+      drops.current = Array.from({ length: 120 }, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        speed: 4 + Math.random() * 6,
+        length: 10 + Math.random() * 20,
+        opacity: 0.04 + Math.random() * 0.08,
+      }));
     };
     resize();
     window.addEventListener('resize', resize);
 
-    const onMove = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target && (target.tagName === 'BUTTON' || target.tagName === 'A' || target.tagName === 'INPUT' || target.closest('button') || target.closest('a'))) return;
-      points.current.push({ x: e.clientX, y: e.clientY, t: Date.now() });
-    };
-    window.addEventListener('mousemove', onMove);
-
     const draw = () => {
-      const now = Date.now();
-      points.current = points.current.filter(p => now - p.t < 1000);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const drop of drops.current) {
+        ctx.beginPath();
+        ctx.moveTo(drop.x, drop.y);
+        ctx.lineTo(drop.x - drop.length * 0.2, drop.y + drop.length);
+        ctx.strokeStyle = `rgba(255,255,255,${drop.opacity})`;
+        ctx.lineWidth = 0.8;
+        ctx.lineCap = 'round';
+        ctx.stroke();
 
-      if (points.current.length > 1) {
-        const total = points.current.length;
-        for (let i = 1; i < total; i++) {
-          const prev = points.current[i - 1];
-          const curr = points.current[i];
-          const age = now - curr.t;
-          const progress = i / total;
-          const alpha = Math.max(0, (1 - age / 1000) * 0.4);
-          const lineWidth = 1 + progress * 6;
-          ctx.beginPath();
-          ctx.moveTo(prev.x, prev.y);
-          ctx.lineTo(curr.x, curr.y);
-          ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
-          ctx.lineWidth = lineWidth;
-          ctx.lineCap = 'round';
-          ctx.stroke();
+        drop.y += drop.speed;
+        drop.x -= drop.speed * 0.2;
+
+        if (drop.y > canvas.height + drop.length) {
+          drop.y = -drop.length;
+          drop.x = Math.random() * canvas.width;
         }
       }
       rafRef.current = requestAnimationFrame(draw);
@@ -61,7 +59,6 @@ const CursorTrail = () => {
     rafRef.current = requestAnimationFrame(draw);
 
     return () => {
-      window.removeEventListener('mousemove', onMove);
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(rafRef.current);
     };
@@ -70,8 +67,7 @@ const CursorTrail = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="pointer-events-none fixed inset-0 z-[9999]"
-      style={{ mixBlendMode: 'screen' }}
+      className="pointer-events-none fixed inset-0 z-[9]"
     />
   );
 };
@@ -152,7 +148,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-      <CursorTrail />
+      <Rain />
       {/* Декоративные размытые круги */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-white/[0.03] blur-3xl" />
