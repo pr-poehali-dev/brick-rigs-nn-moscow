@@ -228,19 +228,19 @@ const Index = () => {
           {/* Вертикальная линия-хребет */}
           <div className="absolute left-[19px] top-0 bottom-0 w-px bg-border/40" />
 
-          {RULES.map((rule, idx) => {
+          {RULES.map((rule) => {
             const depth = rule.num.split('.').length - 1;
             const isRoot = depth === 0;
             const r = rule as typeof RULES[number] & { punishment2?: {label: string; ban: string}[] };
 
             return (
               <div key={rule.num} className="relative flex items-start gap-3 py-1">
-                {/* Кружок на линии */}
-                <div className={`relative z-10 mt-3 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border font-mono text-xs font-bold transition-colors
+                {/* Кружок на линии — всегда с цифрой */}
+                <div className={`relative z-10 mt-3 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border font-mono font-bold transition-colors
                   ${isRoot
-                    ? 'bg-foreground text-background border-foreground'
-                    : 'bg-card text-muted-foreground border-border/50'}`}>
-                  {isRoot ? rule.num : '·'}
+                    ? 'bg-foreground text-background border-foreground text-xs'
+                    : 'bg-card text-muted-foreground border-border/50 text-[9px]'}`}>
+                  {rule.num}
                 </div>
 
                 {/* Горизонтальная черта от кружка к карточке */}
@@ -255,11 +255,18 @@ const Index = () => {
                 >
                   <div className="flex flex-wrap items-start gap-2">
                     <div className="flex-1 min-w-0">
-                      <p className={`text-sm leading-snug ${isRoot ? 'font-bold text-foreground' : 'font-semibold text-foreground'}`}>
+                      <p className={`text-sm leading-snug ${isRoot ? 'font-bold' : 'font-semibold'}`}
+                        style={{ background: 'linear-gradient(90deg, #ffffff 0%, #a0a0a0 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                         {rule.title}
-                        <span className="ml-1.5 font-normal text-muted-foreground text-xs">— {rule.full}</span>
+                        <span className="ml-1.5 font-normal text-xs"
+                          style={{ background: 'linear-gradient(90deg, #888 0%, #555 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                          — {rule.full}
+                        </span>
                       </p>
-                      <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{rule.desc}</p>
+                      <p className="mt-1 text-xs leading-relaxed"
+                        style={{ background: 'linear-gradient(90deg, #888 0%, #555 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                        {rule.desc}
+                      </p>
 
                       {r.punishment2 && (
                         <div className="mt-2 flex flex-wrap gap-2">
