@@ -315,6 +315,60 @@ const Index = () => {
       </section>
 
       <footer className="border-t border-border py-10 text-center text-sm text-muted-foreground">
+        {/* Человечек из Brick Rigs машет рукой */}
+        <div className="flex justify-center mb-6">
+          <svg
+            width="72"
+            height="100"
+            viewBox="0 0 72 100"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            className="brick-guy"
+          >
+            <style>{`
+              @keyframes wave {
+                0%, 100% { transform-origin: 60px 38px; transform: rotate(0deg); }
+                25% { transform-origin: 60px 38px; transform: rotate(-35deg); }
+                75% { transform-origin: 60px 38px; transform: rotate(10deg); }
+              }
+              @keyframes body-sway {
+                0%, 100% { transform: translateX(0); }
+                50% { transform: translateX(2px); }
+              }
+              .brick-guy { animation: body-sway 1.2s ease-in-out infinite; }
+              .waving-arm { animation: wave 1.2s ease-in-out infinite; }
+            `}</style>
+
+            {/* Голова — квадратная как в Brick Rigs */}
+            <rect x="22" y="2" width="28" height="28" rx="4" stroke="white" strokeWidth="2.2" />
+            {/* Глаза */}
+            <rect x="28" y="10" width="5" height="5" rx="1" stroke="white" strokeWidth="1.8" />
+            <rect x="39" y="10" width="5" height="5" rx="1" stroke="white" strokeWidth="1.8" />
+            {/* Рот */}
+            <path d="M30 22 Q36 27 42 22" stroke="white" strokeWidth="1.8" strokeLinecap="round" />
+
+            {/* Тело */}
+            <rect x="20" y="32" width="32" height="30" rx="4" stroke="white" strokeWidth="2.2" />
+
+            {/* Левая рука (статичная) */}
+            <line x1="20" y1="38" x2="6" y2="52" stroke="white" strokeWidth="2.2" strokeLinecap="round" />
+            <rect x="2" y="50" width="8" height="8" rx="2" stroke="white" strokeWidth="2" />
+
+            {/* Правая рука (машет) */}
+            <g className="waving-arm">
+              <line x1="52" y1="38" x2="65" y2="26" stroke="white" strokeWidth="2.2" strokeLinecap="round" />
+              <rect x="62" y="18" width="8" height="8" rx="2" stroke="white" strokeWidth="2" />
+            </g>
+
+            {/* Левая нога */}
+            <line x1="28" y1="62" x2="24" y2="82" stroke="white" strokeWidth="2.2" strokeLinecap="round" />
+            <rect x="18" y="80" width="12" height="8" rx="2" stroke="white" strokeWidth="2" />
+
+            {/* Правая нога */}
+            <line x1="44" y1="62" x2="48" y2="82" stroke="white" strokeWidth="2.2" strokeLinecap="round" />
+            <rect x="42" y="80" width="12" height="8" rx="2" stroke="white" strokeWidth="2" />
+          </svg>
+        </div>
         Нижегородская / Московская области РП · Brick Rigs
       </footer>
     </div>
