@@ -28,6 +28,32 @@ const RULES = [
   { num: '2.5', title: 'CDOD / КДОД', full: 'Call Doctors On Death / Позвонить Медикам При Смерти', desc: 'Правило позволяет вызвать медиков, находясь без сознания.' },
   { num: '2.6', title: 'DR / ДР', full: 'Death Rule / Правило Смерти', desc: 'После того как здоровье падает на 0% — вы теряете сознание. Можно позвонить медикам или полиции, но нельзя писать в общий чат.', punishment: 'Бан 1 день' },
   { num: '2.7', title: 'CR / КР', full: 'Car Rule / Правило Машин', desc: 'Нельзя призывать военную технику — за это бан 4 дня (исключение: фракция ВП и Армия). Призыв машины с подозрительным/неадекватным названием — перманентный бан.', punishment2: [{ label: 'Военная техника', ban: 'Бан 4 дня' }, { label: 'Подозрит. название', ban: 'Перм бан' }] },
+  { num: '3', title: 'Чат', full: 'от англ. to chat — «болтать, общаться»', desc: 'Средство обмена сообщениями через компьютерную сеть в режиме реального времени.' },
+  { num: '3.1', title: 'Спам', full: 'Flood / Флуд', desc: 'Отправка более 3-ёх однотипных сообщений.', punishment: 'Мьют 1 час' },
+  { num: '3.2', title: 'Оскорбление', full: 'Insult / Инсульт', desc: 'Отправка обидных сообщений в сторону человека.', punishment: 'Мьют 2 часа' },
+  { num: '3.2.1', title: 'Оскорбление личности', full: 'Personal Insult', desc: 'Отправка обидных сообщений в сторону личности человека.', punishment: 'Мьют 3 часа' },
+  { num: '3.2.2', title: 'Оскорбление религии', full: 'Religious Insult', desc: 'Отправка обидных сообщений в сторону религии человека.', punishment: 'Мьют 4 часа' },
+  { num: '3.2.3', title: 'Оскорбление расы', full: 'Racial Insult', desc: 'Отправка обидных сообщений в сторону расы человека.', punishment: 'Мьют 5 часов' },
+  { num: '3.2.4', title: 'Оскорбление родных', full: 'Family Insult', desc: 'Отправка обидных сообщений в сторону родных человека.', punishment: 'Мьют 1 день' },
+  { num: '3.3', title: 'Упоминание родных', full: 'Family Mention', desc: 'Отправка сообщений, упоминающих родных в сторону человека.', punishment: 'Варн → Мьют 10 часов' },
+  { num: '3.4', title: '18+ Контент', full: 'Adult Content / Контент для взрослых', desc: 'Отправка контента 18+ или не для слабонервных.', punishment: 'Бан 1–10 дней' },
+  { num: '3.5', title: 'Злоупотребление Caps Lock', full: 'Caps Abuse', desc: 'Отправка более 3-ёх сообщений, написанных ВЕРХНИМ РЕГИСТРОМ.', punishment: 'Мьют 1 час' },
+  { num: '3.6', title: 'Оффтоп', full: 'Off-topic / Не по теме', desc: 'Отправка сообщений не по теме чата.', punishment: 'Мьют 1 час' },
+  { num: '3.7', title: 'Злоупотребление матом', full: 'Profanity Abuse', desc: 'Злоупотребление нецензурной лексикой или ники с матом.', punishment: 'Мьют 1 день' },
+  { num: '3.8', title: 'Ссылки', full: 'Links / Линки', desc: 'Отправка ссылок строго запрещена.', punishment: 'Бан 2 дня' },
+  { num: '3.9', title: 'Призыв на другой проект', full: 'Raid / Рейд', desc: 'Призыв на другой проект или попытка рейда сервера.', punishment: 'Перм бан' },
+  { num: '4', title: 'Войс-чат', full: 'от англ. voice chat — голосовой чат', desc: 'Формат общения, при котором люди разговаривают голосом через интернет в реальном времени.' },
+  { num: '4.1', title: 'Спам звуковой панелью', full: 'Soundboard Spam', desc: 'Отправка звуков более 3-ёх раз.', punishment: 'Мьют 1 час' },
+  { num: '4.2', title: 'Оскорбление', full: 'Voice Insult / Голосовое оскорбление', desc: 'Говорение обидных слов в сторону человека.', punishment: 'Мьют 2 часа' },
+  { num: '4.2.1', title: 'Оскорбление личности', full: 'Personal Voice Insult', desc: 'Говорение обидных слов в сторону личности человека.', punishment: 'Мьют 3 часа' },
+  { num: '4.2.2', title: 'Оскорбление религии', full: 'Religious Voice Insult', desc: 'Говорение обидных слов в сторону религии человека.', punishment: 'Мьют 4 часа' },
+  { num: '4.2.3', title: 'Оскорбление расы', full: 'Racial Voice Insult', desc: 'Говорение обидных слов в сторону расы человека.', punishment: 'Мьют 5 часов' },
+  { num: '4.2.4', title: 'Оскорбление родных', full: 'Family Voice Insult', desc: 'Говорение обидных слов в сторону родных человека.', punishment: 'Мьют 1 день' },
+  { num: '4.3', title: 'Упоминание родных', full: 'Family Voice Mention', desc: 'Говорение, упоминающее родных в сторону человека.', punishment: 'Варн → Мьют 10 часов' },
+  { num: '4.4', title: 'Орание в микрофон', full: 'Mic Screaming', desc: 'Непрерывные громкие звуки либо ор в микрофон.', punishment: 'Мьют 5–10 часов' },
+  { num: '4.5', title: 'Музыка', full: 'Music in Voice / Музыка в голосе', desc: 'Включение любой музыки в войс-чат.', punishment: 'Мьют 1 час' },
+  { num: '4.6', title: 'Злоупотребление матом', full: 'Voice Profanity Abuse', desc: 'Злоупотребление нецензурной лексикой в голосовом чате.', punishment: 'Мьют 1 день' },
+  { num: '4.7', title: 'Призыв на другой проект', full: 'Voice Raid / Голосовой рейд', desc: 'Призыв на другой проект через голосовой чат.', punishment: 'Перм бан' },
 ];
 
 const Index = () => {
@@ -236,9 +262,19 @@ const Index = () => {
             const depth = rule.num.split('.').length - 1;
             const r = rule as typeof RULES[number] & { punishment2?: {label: string; ban: string}[] };
             const isLast = idx === RULES.length - 1;
+            const isSection34Start = rule.num === '3';
 
             return (
-              <div key={rule.num} className="group relative flex items-stretch gap-0">
+              <div key={rule.num}>
+              {isSection34Start && (
+                <div className="my-6 rounded-2xl border border-border/30 bg-card/20 px-6 py-5">
+                  <p className="font-display text-2xl font-bold sm:text-3xl"
+                    style={{ background: 'linear-gradient(90deg, #ffffff 0%, #666 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+                    Разделы 3–4 &nbsp;·&nbsp; Discord правила
+                  </p>
+                </div>
+              )}
+              <div className="group relative flex items-stretch gap-0">
 
                 {/* Левая колонка: кружок + вертикальная линия */}
                 <div className="relative flex flex-col items-center" style={{ width: 40, minWidth: 40 }}>
@@ -304,15 +340,9 @@ const Index = () => {
                   </div>
                 </div>
               </div>
+              </div>
             );
           })}
-        </div>
-
-        <div className="mt-8 mb-4 rounded-2xl border border-border/30 bg-card/20 px-6 py-5">
-          <p className="font-display text-2xl font-bold sm:text-3xl"
-            style={{ background: 'linear-gradient(90deg, #ffffff 0%, #666 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
-            Разделы 3–4 &nbsp;·&nbsp; Discord правила
-          </p>
         </div>
 
         <p className="mt-8 text-center text-sm text-muted-foreground/70 max-w-xl mx-auto leading-relaxed">
