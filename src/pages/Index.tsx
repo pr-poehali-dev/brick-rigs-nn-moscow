@@ -1,11 +1,6 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 import Icon from '@/components/ui/icon';
 
-const ГЕРБ_НН = 'https://cdn.poehali.dev/projects/880e65a8-0481-459a-aad5-111eba817912/files/217e82e4-9e62-4909-bb43-c97b003fa1d1.jpg';
-const ГЕРБ_МО = 'https://cdn.poehali.dev/projects/880e65a8-0481-459a-aad5-111eba817912/files/6429fe84-0262-478f-a465-b45cf40922cb.jpg';
-const ЛОГО_BR = 'https://cdn.poehali.dev/projects/880e65a8-0481-459a-aad5-111eba817912/files/618475e5-ce19-4036-9940-d6b917f6d757.jpg';
-
-const SIDE_IMAGES = [ГЕРБ_НН, ГЕРБ_МО, ЛОГО_BR];
 
 interface TrailPoint {
   x: number;
@@ -32,13 +27,15 @@ const CursorTrail = () => {
     window.addEventListener('resize', resize);
 
     const onMove = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target && (target.tagName === 'BUTTON' || target.tagName === 'A' || target.tagName === 'INPUT' || target.closest('button') || target.closest('a'))) return;
       points.current.push({ x: e.clientX, y: e.clientY, t: Date.now() });
     };
     window.addEventListener('mousemove', onMove);
 
     const draw = () => {
       const now = Date.now();
-      points.current = points.current.filter(p => now - p.t < 3000);
+      points.current = points.current.filter(p => now - p.t < 1000);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       if (points.current.length > 1) {
@@ -46,7 +43,7 @@ const CursorTrail = () => {
           const prev = points.current[i - 1];
           const curr = points.current[i];
           const age = now - curr.t;
-          const alpha = Math.max(0, (1 - age / 3000) * 0.45);
+          const alpha = Math.max(0, (1 - age / 1000) * 0.4);
           ctx.beginPath();
           ctx.moveTo(prev.x, prev.y);
           ctx.lineTo(curr.x, curr.y);
@@ -76,49 +73,7 @@ const CursorTrail = () => {
   );
 };
 
-const SideEmblem = ({ side }: { side: 'left' | 'right' }) => {
-  const [current, setCurrent] = useState(0);
-  const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
-    const cycle = () => {
-      setVisible(false);
-      setTimeout(() => {
-        setCurrent(prev => (prev + 1) % SIDE_IMAGES.length);
-        setVisible(true);
-        setTimeout(() => setVisible(false), 4000);
-      }, 800);
-    };
-    const offset = side === 'right' ? 3500 : 0;
-    const timer = setTimeout(() => {
-      setVisible(true);
-      const interval = setInterval(cycle, 7000);
-      return () => clearInterval(interval);
-    }, offset);
-    return () => clearTimeout(timer);
-  }, [side]);
-
-  return (
-    <div
-      className="pointer-events-none fixed top-1/2 z-10 -translate-y-1/2"
-      style={{ [side]: 0, width: 100 }}
-    >
-      <img
-        src={SIDE_IMAGES[current]}
-        alt=""
-        style={{
-          width: 80,
-          height: 80,
-          objectFit: 'contain',
-          opacity: visible ? 0.06 : 0,
-          transition: 'opacity 1.5s ease-in-out',
-          filter: 'grayscale(1) brightness(3)',
-          [side === 'left' ? 'marginLeft' : 'marginRight']: 8,
-        }}
-      />
-    </div>
-  );
-};
 
 const NN_IMG = 'https://cdn.poehali.dev/projects/880e65a8-0481-459a-aad5-111eba817912/files/8befb2d5-ba3d-4e44-88ae-e2e0d04661d8.jpg';
 const MSK_IMG = 'https://cdn.poehali.dev/projects/880e65a8-0481-459a-aad5-111eba817912/files/1d5da627-7d6b-4703-90ff-3a1c67ad0357.jpg';
@@ -195,8 +150,6 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       <CursorTrail />
-      <SideEmblem side="left" />
-      <SideEmblem side="right" />
       {/* Декоративные размытые круги */}
       <div className="pointer-events-none fixed inset-0 -z-10">
         <div className="absolute -top-40 -left-40 h-96 w-96 rounded-full bg-white/[0.03] blur-3xl" />
