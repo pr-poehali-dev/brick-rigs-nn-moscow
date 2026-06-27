@@ -7,45 +7,72 @@ const ЛОГО_BR = 'https://cdn.poehali.dev/projects/880e65a8-0481-459a-aad5-11
 
 const SIDE_IMAGES = [ГЕРБ_НН, ГЕРБ_МО, ЛОГО_BR];
 
-interface TrailDot {
-  id: number;
+interface TrailPoint {
   x: number;
   y: number;
+  t: number;
 }
 
 const CursorTrail = () => {
-  const [dots, setDots] = useState<TrailDot[]>([]);
-  const counterRef = useRef(0);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const points = useRef<TrailPoint[]>([]);
+  const rafRef = useRef<number>(0);
 
   useEffect(() => {
-    const handleMove = (e: MouseEvent) => {
-      const id = ++counterRef.current;
-      setDots(prev => [...prev.slice(-18), { id, x: e.clientX, y: e.clientY }]);
-      setTimeout(() => setDots(prev => prev.filter(d => d.id !== id)), 3000);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     };
-    window.addEventListener('mousemove', handleMove);
-    return () => window.removeEventListener('mousemove', handleMove);
+    resize();
+    window.addEventListener('resize', resize);
+
+    const onMove = (e: MouseEvent) => {
+      points.current.push({ x: e.clientX, y: e.clientY, t: Date.now() });
+    };
+    window.addEventListener('mousemove', onMove);
+
+    const draw = () => {
+      const now = Date.now();
+      points.current = points.current.filter(p => now - p.t < 3000);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      if (points.current.length > 1) {
+        for (let i = 1; i < points.current.length; i++) {
+          const prev = points.current[i - 1];
+          const curr = points.current[i];
+          const age = now - curr.t;
+          const alpha = Math.max(0, (1 - age / 3000) * 0.45);
+          ctx.beginPath();
+          ctx.moveTo(prev.x, prev.y);
+          ctx.lineTo(curr.x, curr.y);
+          ctx.strokeStyle = `rgba(255,255,255,${alpha})`;
+          ctx.lineWidth = 1.5;
+          ctx.lineCap = 'round';
+          ctx.stroke();
+        }
+      }
+      rafRef.current = requestAnimationFrame(draw);
+    };
+    rafRef.current = requestAnimationFrame(draw);
+
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('resize', resize);
+      cancelAnimationFrame(rafRef.current);
+    };
   }, []);
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-[9999]">
-      {dots.map((dot, i) => (
-        <div
-          key={dot.id}
-          style={{
-            position: 'absolute',
-            left: dot.x - 4,
-            top: dot.y - 4,
-            width: 8,
-            height: 8,
-            borderRadius: '50%',
-            background: `radial-gradient(circle, rgba(255,255,255,${0.35 * (i / dots.length)}) 0%, transparent 70%)`,
-            transform: `scale(${0.4 + 0.6 * (i / dots.length)})`,
-            pointerEvents: 'none',
-          }}
-        />
-      ))}
-    </div>
+    <canvas
+      ref={canvasRef}
+      className="pointer-events-none fixed inset-0 z-[9999]"
+      style={{ mixBlendMode: 'screen' }}
+    />
   );
 };
 
@@ -151,6 +178,7 @@ const RULES = [
 const Index = () => {
   const rulesRef = useRef<HTMLElement>(null);
   const citiesRef = useRef<HTMLElement>(null);
+  const discordRulesRef = useRef<HTMLDivElement>(null);
 
   const scrollToRules = () => {
     rulesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -158,6 +186,10 @@ const Index = () => {
 
   const scrollToCities = () => {
     citiesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const scrollToDiscordRules = () => {
+    discordRulesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
@@ -285,15 +317,23 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Кнопка перехода к правилам */}
-        <div className="mt-12 flex justify-center">
+        {/* Кнопки перехода к правилам */}
+        <div className="mt-12 flex flex-col items-center gap-3">
           <button
             onClick={scrollToRules}
-            className="group inline-flex items-center gap-3 rounded-full border border-border bg-card px-8 py-4 text-lg font-semibold text-foreground transition-all hover:bg-accent hover:scale-105"
+            className="group inline-flex items-center gap-3 rounded-full border border-border bg-card px-10 py-4 text-lg font-semibold text-foreground transition-all hover:bg-accent hover:scale-105"
           >
             <Icon name="BookOpen" size={22} />
             Правила нашего проекта
             <Icon name="ChevronDown" size={20} className="transition-transform group-hover:translate-y-1" />
+          </button>
+          <button
+            onClick={scrollToDiscordRules}
+            className="group inline-flex items-center gap-3 rounded-full border border-border/60 bg-card/60 px-7 py-3 text-base font-semibold text-foreground/80 transition-all hover:bg-accent hover:scale-105"
+          >
+            <Icon name="MessageCircle" size={18} />
+            Правила нашего сервера
+            <Icon name="ChevronDown" size={18} className="transition-transform group-hover:translate-y-1" />
           </button>
         </div>
       </section>
@@ -362,7 +402,7 @@ const Index = () => {
             return (
               <div key={rule.num}>
               {isSection34Start && (
-                <div className="my-6 rounded-2xl border border-border/30 bg-card/20 px-6 py-5">
+                <div ref={discordRulesRef} className="my-6 rounded-2xl border border-border/30 bg-card/20 px-6 py-5">
                   <p className="font-display text-2xl font-bold sm:text-3xl"
                     style={{ background: 'linear-gradient(90deg, #ffffff 0%, #666 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
                     Разделы 3–4 &nbsp;·&nbsp; Discord правила
