@@ -32,9 +32,14 @@ const RULES = [
 
 const Index = () => {
   const rulesRef = useRef<HTMLElement>(null);
+  const citiesRef = useRef<HTMLElement>(null);
 
   const scrollToRules = () => {
     rulesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  const scrollToCities = () => {
+    citiesRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   return (
@@ -77,13 +82,16 @@ const Index = () => {
           <span className="text-sm text-muted-foreground">{DISCORD}</span>
         </div>
 
-        <div className="absolute bottom-8 animate-bounce text-muted-foreground">
+        <button
+          onClick={scrollToCities}
+          className="absolute bottom-8 animate-bounce text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+        >
           <Icon name="ChevronDown" size={28} />
-        </div>
+        </button>
       </section>
 
       {/* ГОРОДА */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
+      <section ref={citiesRef} className="mx-auto max-w-6xl scroll-mt-8 px-6 py-20">
         <h2 className="font-display mb-12 text-center text-3xl font-bold sm:text-4xl">Наши города</h2>
         <div className="grid gap-8 md:grid-cols-2">
           {/* Нижний Новгород — с переворотом */}
