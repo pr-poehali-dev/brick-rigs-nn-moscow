@@ -224,6 +224,13 @@ const Index = () => {
           <p className="mt-3 text-muted-foreground">Соблюдай правила — и игра будет честной для всех</p>
         </div>
 
+        <div className="mb-4 rounded-2xl border border-border/30 bg-card/20 px-6 py-5">
+          <p className="font-display text-2xl font-bold sm:text-3xl"
+            style={{ background: 'linear-gradient(90deg, #ffffff 0%, #666 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            Разделы 1–2 &nbsp;·&nbsp; РП правила
+          </p>
+        </div>
+
         <div className="relative flex flex-col gap-0">
           {RULES.map((rule, idx) => {
             const depth = rule.num.split('.').length - 1;
