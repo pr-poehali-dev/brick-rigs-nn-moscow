@@ -216,65 +216,63 @@ const Index = () => {
           <p className="mt-3 text-muted-foreground">Соблюдай правила — и игра будет честной для всех</p>
         </div>
 
-        <div className="flex flex-col gap-2">
-          {RULES.map((rule) => {
+        <div className="relative flex flex-col">
+          {/* Вертикальная линия-хребет */}
+          <div className="absolute left-[19px] top-0 bottom-0 w-px bg-border/40" />
+
+          {RULES.map((rule, idx) => {
             const depth = rule.num.split('.').length - 1;
             const isRoot = depth === 0;
             const r = rule as typeof RULES[number] & { punishment2?: {label: string; ban: string}[] };
 
             return (
-              <div
-                key={rule.num}
-                style={{ marginLeft: `${depth * 20}px` }}
-                className={`group relative rounded-2xl border transition-all duration-200
+              <div key={rule.num} className="relative flex items-start gap-3 py-1">
+                {/* Кружок на линии */}
+                <div className={`relative z-10 mt-3 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border font-mono text-xs font-bold transition-colors
                   ${isRoot
-                    ? 'border-border/60 bg-card hover:border-border'
-                    : 'border-border/30 bg-card/50 hover:bg-card/80'}
-                `}
-              >
-                {/* Левая цветная полоска для подпунктов */}
-                {!isRoot && (
-                  <div className="absolute left-0 top-3 bottom-3 w-0.5 rounded-full bg-border/50" />
-                )}
+                    ? 'bg-foreground text-background border-foreground'
+                    : 'bg-card text-muted-foreground border-border/50'}`}>
+                  {isRoot ? rule.num : '·'}
+                </div>
 
-                <div className="flex flex-wrap items-start gap-3 p-4 pl-5">
-                  {/* Номер */}
-                  <span className={`shrink-0 rounded-xl px-2.5 py-0.5 font-mono text-xs font-bold
-                    ${isRoot ? 'bg-foreground text-background' : 'bg-secondary text-muted-foreground'}`}>
-                    {rule.num}
-                  </span>
+                {/* Горизонтальная черта от кружка к карточке */}
+                <div className="absolute left-10 top-[1.35rem] h-px w-3 bg-border/40" />
 
-                  {/* Текст */}
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-foreground leading-snug">
-                      {rule.title}
-                      <span className="ml-1.5 font-normal text-muted-foreground text-xs">
-                        — {rule.full}
+                {/* Карточка */}
+                <div className={`flex-1 rounded-2xl border p-4 transition-colors
+                  ${isRoot
+                    ? 'border-border bg-card'
+                    : 'border-border/30 bg-card/40 hover:bg-card/70'}`}
+                  style={{ marginLeft: `${depth * 12}px` }}
+                >
+                  <div className="flex flex-wrap items-start gap-2">
+                    <div className="flex-1 min-w-0">
+                      <p className={`text-sm leading-snug ${isRoot ? 'font-bold text-foreground' : 'font-semibold text-foreground'}`}>
+                        {rule.title}
+                        <span className="ml-1.5 font-normal text-muted-foreground text-xs">— {rule.full}</span>
+                      </p>
+                      <p className="mt-1 text-xs text-muted-foreground leading-relaxed">{rule.desc}</p>
+
+                      {r.punishment2 && (
+                        <div className="mt-2 flex flex-wrap gap-2">
+                          {r.punishment2.map((p) => (
+                            <span key={p.label} className="inline-flex items-center gap-1 rounded-xl border border-destructive/30 bg-destructive/10 px-2.5 py-0.5 text-xs font-semibold text-red-400">
+                              <Icon name="AlertTriangle" size={10} />
+                              <span className="text-muted-foreground font-normal">{p.label}:</span>
+                              {p.ban}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {'punishment' in rule && rule.punishment && !r.punishment2 && (
+                      <span className="shrink-0 self-start inline-flex items-center gap-1 rounded-xl border border-destructive/30 bg-destructive/10 px-2.5 py-0.5 text-xs font-semibold text-red-400 whitespace-nowrap">
+                        <Icon name="AlertTriangle" size={10} />
+                        {rule.punishment}
                       </span>
-                    </p>
-                    <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{rule.desc}</p>
-
-                    {/* Двойное наказание для 2.7 */}
-                    {r.punishment2 && (
-                      <div className="mt-2 flex flex-wrap gap-2">
-                        {r.punishment2.map((p) => (
-                          <span key={p.label} className="inline-flex items-center gap-1.5 rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-1 text-xs font-semibold text-red-400">
-                            <Icon name="AlertTriangle" size={11} />
-                            <span className="text-muted-foreground font-normal">{p.label}:</span>
-                            {p.ban}
-                          </span>
-                        ))}
-                      </div>
                     )}
                   </div>
-
-                  {/* Наказание */}
-                  {'punishment' in rule && rule.punishment && !r.punishment2 && (
-                    <span className="shrink-0 self-start inline-flex items-center gap-1.5 rounded-xl border border-destructive/30 bg-destructive/10 px-3 py-1 text-xs font-semibold text-red-400 whitespace-nowrap">
-                      <Icon name="AlertTriangle" size={11} />
-                      {rule.punishment}
-                    </span>
-                  )}
                 </div>
               </div>
             );
